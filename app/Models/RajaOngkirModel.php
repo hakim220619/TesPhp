@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,7 +27,7 @@ class RajaOngkirModel extends Model
 
         $response = curl_exec($curl);
         $err = curl_error($curl);
-dd($response);
+// dd($response);
         curl_close($curl);
 
         if ($err) {
@@ -67,17 +68,10 @@ dd($response);
             return $response['rajaongkir']['results'];
         }
     }
-    public static function getService()
+    public static function getService($request)
     {
-        // $dbSetting = $this->db->get('settings')->row_array();
-        // $origin = $dbSetting['regency_id'];
-        // $destination = $this->input->post('destination');
-
-        // $getcart = $this->db->get_where('cart', ['user' => $this->session->userdata('id')]);
-        // $weight = 0;
-        // foreach ($getcart->result_array() as $key) {
-        //     $weight += (intval($key['weight']) * intval($key['qty']));
-        // }
+        $origin = 5;
+        $dest = $request[1];
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -88,7 +82,7 @@ dd($response);
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "origin=501&destination=114&weight=1700&courier=jne",
+            CURLOPT_POSTFIELDS => "origin=" . $origin . "&destination=" . $dest . "&weight=1&courier=jne",
             CURLOPT_HTTPHEADER => array(
                 "content-type: application/x-www-form-urlencoded",
                 "key: 454e399845917f3278f9fbcbdec9d483" 
@@ -104,7 +98,7 @@ dd($response);
             return "cURL Error #:" . $err;
         } else {
             $response = json_decode($response, true);
-            return $response['rajaongkir']['results'][0]['costs'];
+            return $response;
         }
     }
 }

@@ -7,18 +7,33 @@ use Illuminate\Http\Request;
 
 class RajaOngkirController extends Controller
 {
-    function ShowProvinces() {
+    function view()
+    {
         $dataProvince = RajaOngkirModel::getProvinces();
-        // dd($dataProvince[4]['province_id']);
-        $this->showOngkir($dataProvince[4]['province_id']);
+        return view('rajaongkir', compact('dataProvince'));
     }
-    function showOngkir($id) {
-        // dd($id);
-        $showOngkir = RajaOngkirModel::getCity($id); 
+
+    public function getLocation(Request $request)
+    {
+        $id = $request->id;
+        $getLocation = RajaOngkirModel::getCity($id);
+        $list = "<option></option>";
+        foreach ($getLocation as $d) {
+            $list .= "<option value='" . $d['city_id'] . "'>" . $d['type'] . ' ' . $d['city_name'] . "</option>";
+        }
+        echo json_encode($list);
     }
-    function getService() {
-        // dd($id);
-        $showService = RajaOngkirModel::getService(); 
-        // dd($showService);
+
+    public function getService(Request $request)
+    {
+        $jne = RajaOngkirModel::getService(["jne", $request->destination]);
+        $list = "<option></option>";
+        $cost = "";
+        if (count($jne) > 0) {
+            foreach ($jne as $s) {
+                $list .= '<option value="' . $s['results'][0]['costs'][0]['cost'][0]['value'] . "-" . $s['results'][0]['costs'][0]['service'] . '-jne">' . "JNE" . " " . $s['results'][0]['costs'][0]['description'] . " Rp. " . number_format($s['results'][0]['costs'][0]['cost'][0]['value']) . " (" . $s['results'][0]['costs'][0]['service'] . ")" . '</option>';
+            };
+        }
+        echo json_encode($list);
     }
 }

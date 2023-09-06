@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('app');
 });
-Route::get('/rajaOngkir', function () {
-    return view('rajaongkir');
-});
+Route::get('/rajaOngkir', [RajaOngkirController::class, 'view'])->name('rajaOngkir');
 Route::get('/ShowProvinces', [RajaOngkirController::class, 'ShowProvinces'])->name('rajaOngkir.ShowProvinces');
 Route::get('/showOngkir/{id}', [RajaOngkirController::class, 'showOngkir'])->name('rajaOngkir.showOngkir');
-Route::get('/getService', [RajaOngkirController::class, 'getService'])->name('rajaOngkir.getService');
+Route::post('/getService', [RajaOngkirController::class, 'getService'])->name('rajaOngkir.getService');
+Route::post('/getLocation', [RajaOngkirController::class, 'getLocation'])->name('rajaOngkir.getLocation');
