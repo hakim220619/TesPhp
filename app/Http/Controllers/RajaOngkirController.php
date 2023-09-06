@@ -31,7 +31,7 @@ class RajaOngkirController extends Controller
         $cost = "";
         if (count($jne) > 0) {
             foreach ($jne as $s) {
-                $list .= '<option value="' . $s['results'][0]['costs'][0]['cost'][0]['value'] . "-" . $s['results'][0]['costs'][0]['service'] . '-jne">' . "JNE" . " " . $s['results'][0]['costs'][0]['description'] . " Rp. " . number_format($s['results'][0]['costs'][0]['cost'][0]['value']) . " (" . $s['results'][0]['costs'][0]['service'] . ")" . '</option>';
+                $list .= '<option value="' . $s['results'][0]['costs'][0]['cost'][0]['value'] . "-" . $s['results'][0]['costs'][0]['service'] . '-jne">' . "JNE" . " " . $s['results'][0]['costs'][0]['description'] . " Rp. " . number_format($s['results'][0]['costs'][0]['cost'][0]['value']) . " (" . $s['results'][0]['costs'][0]['service'] . ") Estimasi (" . $s['results'][0]['costs'][0]['cost'][0]['etd'] . " hari)" . '</option>';
             };
         }
         echo json_encode($list);
